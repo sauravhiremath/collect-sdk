@@ -122,7 +122,7 @@ async function getOAuthAuthorization(
  * @param tokenSigner The encrypted ID for the access token.
  * @return The access token.
  */
-export async function requestToken_common(
+export async function requestToken(
   args: OAuthArgs,
   tokenSigner: Signer
 ): Promise<Token> {
