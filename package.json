@@ -2,17 +2,22 @@
   "name": "collect-plugin",
   "version": "1.0.0",
   "private": true,
-  "main": "server.js",
+  "main": "index.js",
   "author": "Saurav M. H",
   "license": "GPL-3.0-or-later",
-  "xo": {
-    "space": true,
-    "prettier": true
+  "eslintConfig": {
+    "extends": [
+      "xo",
+      "xo-typescript/space"
+    ]
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.14.2",
+    "@typescript-eslint/parser": "^4.14.2",
+    "eslint-config-xo": "^0.34.0",
+    "eslint-config-xo-typescript": "^0.37.0",
     "prettier": "^2.2.1",
-    "typescript": "^4.1.3",
-    "xo": "^0.37.1"
+    "typescript": "^4.1.3"
   },
   "workspaces": {
     "packages": [
