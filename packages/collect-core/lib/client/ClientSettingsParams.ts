@@ -23,7 +23,7 @@ export interface ClientSettingsParams {
    * @example
    *
    * ```
-   *  'here' | 'here-dev' | 'http://127.0.0.1/my-local-api-service'
+   *  'collect' | 'collect-dev' | 'http://127.0.0.1/local-api-service'
    * ```
    */
   environment: EnvironmentName;

@@ -14,3 +14,4 @@ export enum STATUS_CODES {
 }
 
 export * from "./getEnvLookupUrl";
+export * from "./HttpError";
