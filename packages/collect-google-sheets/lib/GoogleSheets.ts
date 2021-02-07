@@ -17,6 +17,13 @@ export class GoogleSheets {
     this.sheetsService = google.sheets({ version: "v4", auth: this.auth });
   }
 
+  /**
+   * Export Array of objects to a new google spreadsheet
+   * 
+   * @param data Array of objects from Form Store Data
+   * @param title User defined title of the spreadsheet to be created
+   * @returns updated spreadsheet data after all operations
+   */
   async export2Sheets(
     data: Array<StoreData>,
     title: string
