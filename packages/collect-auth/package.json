@@ -1,0 +1,11 @@
+{
+  "name": "@collect/auth",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Saurav M. H",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  }
+}
