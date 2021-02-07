@@ -65,7 +65,7 @@ export interface StoreConfig {
 }
 
 /**
- * Used to get and validate an access token, and to get user data.
+ * Used to initialise form store and populate the data
  */
 export class Store {
   private m_accessToken: string;
@@ -129,4 +129,20 @@ export class Store {
 
     return request.json();
   }
+
+  /**
+   *
+   * @param formId The string containing unique identifier of the form to retrieve data from
+   * @param userId The string containing unique identifier of the user to find in the form
+   *
+   * @returns Array<UserResponses> from the required form
+   */
+  async findResponseByUserId(formId: string, userId: string): Promise<any> {}
+
+  /**
+   *
+   * @param formId The string containing unique identifier of the form to remove data from
+   * @param userId The string containing unique identifier of the user to find and remove from the form
+   */
+  async removeResponseByUserId(formId: string, userId: string): Promise<void> {}
 }
