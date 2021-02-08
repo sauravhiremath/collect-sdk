@@ -1,2 +1,2 @@
-export * from "./GoogleAuth";
-export * from "./GoogleSheets";
+export * from './GoogleAuth';
+export * from './GoogleSheets';

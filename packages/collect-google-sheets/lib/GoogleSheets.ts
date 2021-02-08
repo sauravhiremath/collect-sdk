@@ -1,6 +1,6 @@
-import { google, sheets_v4 } from "googleapis";
-import { OAuth2Client } from "google-auth-library";
-import { StoreData } from "@collect/store";
+import { google, sheets_v4 } from 'googleapis';
+import { OAuth2Client } from 'google-auth-library';
+import { StoreData } from '@collect/store';
 
 export class GoogleSheets {
   private auth: OAuth2Client;
@@ -14,12 +14,12 @@ export class GoogleSheets {
    */
   constructor(private readonly oAuth2Client: OAuth2Client) {
     this.auth = oAuth2Client;
-    this.sheetsService = google.sheets({ version: "v4", auth: this.auth });
+    this.sheetsService = google.sheets({ version: 'v4', auth: this.auth });
   }
 
   /**
    * Export Array of objects to a new google spreadsheet
-   * 
+   *
    * @param data Array of objects from Form Store Data
    * @param title User defined title of the spreadsheet to be created
    * @returns updated spreadsheet data after all operations

@@ -1,22 +1,22 @@
-import { google, sheets_v4 } from "googleapis";
+import { google } from 'googleapis';
 import {
   OAuth2ClientOptions,
   Credentials,
   OAuth2Client,
-} from "google-auth-library";
-import fs from "fs";
-import url from "url";
-import http from "http";
-import open from "open";
-import enableDestroy from "server-destroy";
+} from 'google-auth-library';
+import fs from 'fs';
+import url from 'url';
+import http from 'http';
+import open from 'open';
+import enableDestroy from 'server-destroy';
 
-import { GoogleSheets } from "./GoogleSheets";
-import { HttpError } from "@collect/core";
+import { GoogleSheets } from './GoogleSheets';
+import { HttpError } from '@collect/core';
 
 export interface GoogleConfig {
   credentialsPath: string;
   tokenPath: string;
-  scopes: Array<string>;
+  scopes: string[];
   /** One of the following environments: collect, collect-dev, local, and other string. */
   env?: string;
   /** The URL of your custom environment. */
@@ -26,13 +26,14 @@ export interface GoogleConfig {
  * Authenticate Google APIs SDK using Google Auth Credentials.
  */
 export class Google {
-  private m_credentials: OAuth2ClientOptions;
-  private m_token: Credentials;
-  private m_scopes: Array<string> = [
-    "https://www.googleapis.com/auth/spreadsheets",
-  ];
-  private readonly m_apiUrl: string;
   public sheets?: GoogleSheets;
+  private readonly m_credentials: OAuth2ClientOptions;
+  private readonly m_token: Credentials;
+  private readonly m_scopes: string[] = [
+    'https://www.googleapis.com/auth/spreadsheets',
+  ];
+
+  private readonly m_apiUrl?: string;
 
   /**
    * Creates the [[Google]] instance.
@@ -43,30 +44,32 @@ export class Google {
   constructor(private readonly config: GoogleConfig) {
     if (this.config.customUrl !== undefined) {
       this.m_apiUrl = this.config.customUrl;
-    } else {
+    }
+
+    if (this.config.customUrl) {
       switch (this.config.env) {
-        case "collect":
-          this.m_apiUrl = "https://account.api.collect.atlan.com/";
+        case 'collect':
+          this.m_apiUrl = 'https://account.api.collect.atlan.com/';
           break;
-        case "collect-dev":
-          this.m_apiUrl = "https://account.api.dev.collect.atlan.com/";
+        case 'collect-dev':
+          this.m_apiUrl = 'https://account.api.dev.collect.atlan.com/';
           break;
         default:
-          this.m_apiUrl = "https://account.api.collect.atlan.com/";
+          this.m_apiUrl = 'https://account.api.collect.atlan.com/';
           break;
       }
     }
 
     if (!config.tokenPath || !config.credentialsPath) {
       throw new Error(
-        `The credentials and/or token has not been added, please add required file paths!`
+        'The credentials and/or token has not been added, please add required file paths!'
       );
     }
 
     this.m_credentials = JSON.parse(
-      fs.readFileSync(config.credentialsPath, "utf8")
+      fs.readFileSync(config.credentialsPath, 'utf8')
     );
-    this.m_token = JSON.parse(fs.readFileSync(config.tokenPath, "utf8"));
+    this.m_token = JSON.parse(fs.readFileSync(config.tokenPath, 'utf8'));
     this.m_scopes = config.scopes;
   }
 
@@ -85,7 +88,7 @@ export class Google {
   private async getToken(oAuth2Client: OAuth2Client): Promise<OAuth2Client> {
     return new Promise((resolve, reject) => {
       const authUrl = oAuth2Client.generateAuthUrl({
-        access_type: "offline",
+        access_type: 'offline',
         scope: this.m_scopes,
       });
 
@@ -94,22 +97,23 @@ export class Google {
       const server = http
         .createServer(async (req, res) => {
           try {
-            if (req.url && req.url.indexOf("/oauth2callback") > -1) {
-              // acquire the code from the querystring, and close the web server.
-              const qs = new url.URL(req.url, "http://localhost:3000")
+            if (req.url && req.url.indexOf('/oauth2callback') > -1) {
+              // Acquire the code from the querystring, and close the web server.
+              const qs = new url.URL(req.url, 'http://localhost:3000')
                 .searchParams;
-              const code = qs.get("code");
+              const code = qs.get('code');
               res.end(
-                "Authentication successful! Please return to the console."
+                'Authentication successful! Please return to the console.'
               );
               server.destroy();
 
               if (!code) {
                 throw new HttpError(
                   500,
-                  `OAuth2 Token re-creation failed. Internal Error!`
+                  'OAuth2 Token re-creation failed. Internal Error!'
                 );
               }
+
               const r = await oAuth2Client.getToken(code);
               oAuth2Client.setCredentials(r.tokens);
               resolve(oAuth2Client);
@@ -119,7 +123,7 @@ export class Google {
           }
         })
         .listen(3000, () => {
-          // open the browser to the authorize url to start the workflow
+          // Open the browser to the authorize url to start the workflow
           open(authUrl, { wait: false }).then((cp) => cp.unref());
         });
       enableDestroy(server);
