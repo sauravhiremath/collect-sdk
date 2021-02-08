@@ -30,7 +30,6 @@
     "lint:fix": "eslint . --cache --ext js,jsx,ts,tsx,md --fix",
     "lint:prettier": "prettier '**/*.{md,yml,yaml}' --write --ignore-path .gitignore",
     "lint:prettier:ci": "prettier '**/*.{md,yml,yaml}' --check --ignore-path .gitignore",
-    "watch": "yarn build:js && node ./scripts/watch.js",
     "watch:ts": "yarn build:ts --watch"
   },
   "devDependencies": {
