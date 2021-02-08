@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "rootDir": "lib",
     "outDir": "build"
   },
-  "include": ["./lib", "index.ts"]
+  "references": [{ "path": "../collect-core" }]
 }

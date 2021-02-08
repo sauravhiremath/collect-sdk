@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build-clean": "rimraf './packages/*/build' './packages/*/tsconfig.tsbuildinfo'",
-    "build": "tsc",
+    "build": "yarn build:js && yarn build:ts",
     "build:js": "node ./scripts/build.js",
     "build:ts": "node ./scripts/buildTs.js",
     "lint": "eslint . --cache --ext js,jsx,ts,tsx,md",
@@ -23,14 +23,21 @@
     "watch:ts": "yarn build:ts --watch"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-typescript": "^7.12.13",
     "@typescript-eslint/eslint-plugin": "^4.14.2",
     "@typescript-eslint/parser": "^4.14.2",
     "chalk": "^4.1.0",
     "eslint-config-xo": "^0.34.0",
     "eslint-config-xo-typescript": "^0.37.0",
     "execa": "^5.0.0",
+    "glob": "^7.1.6",
     "globby": "^11.0.2",
+    "micromatch": "^4.0.2",
     "prettier": "^2.2.1",
+    "read-pkg": "^5.2.0",
+    "rimraf": "^3.0.2",
     "string-length": "^4.0.1",
     "strip-json-comments": "^3.1.1",
     "throat": "^6.0.1",
@@ -40,5 +47,8 @@
     "packages": [
       "packages/**"
     ]
+  },
+  "engines": {
+    "node": "^12.13.0 || ^14.15.0 || >=15.0.0"
   }
 }

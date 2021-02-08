@@ -6,6 +6,10 @@
   "author": "Saurav M. H",
   "license": "GPL-3.0-or-later",
   "private": true,
+  "exports": {
+    ".": "./build/index.js",
+    "./package.json": "./package.json"
+  },
   "devDependencies": {
     "@types/node": "^14.14.25",
     "@types/server-destroy": "^1.0.1",
@@ -16,5 +20,8 @@
     "googleapis": "39",
     "open": "^7.4.0",
     "server-destroy": "^1.0.1"
+  },
+  "engines": {
+    "node": "^12.13.0 || ^14.15.0 || >=15.0.0"
   }
 }

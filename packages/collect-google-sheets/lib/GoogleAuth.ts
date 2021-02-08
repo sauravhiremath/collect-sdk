@@ -29,9 +29,7 @@ export class Google {
   public sheets?: GoogleSheets;
   private readonly m_credentials: OAuth2ClientOptions;
   private readonly m_token: Credentials;
-  private readonly m_scopes: string[] = [
-    'https://www.googleapis.com/auth/spreadsheets',
-  ];
+  private readonly m_scopes: Array<string>;
 
   private readonly m_apiUrl?: string;
 
@@ -70,7 +68,9 @@ export class Google {
       fs.readFileSync(config.credentialsPath, 'utf8')
     );
     this.m_token = JSON.parse(fs.readFileSync(config.tokenPath, 'utf8'));
-    this.m_scopes = config.scopes;
+    this.m_scopes = config.scopes || [
+      'https://www.googleapis.com/auth/spreadsheets',
+    ];
   }
 
   async initialiseSheets(): Promise<GoogleSheets> {

@@ -1,8 +1,9 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "rootDir": "lib",
     "outDir": "build",
     "esModuleInterop": true
   },
-  "include": ["./lib", "index.ts"]
+  "references": [{ "path": "../collect-store" }]
 }

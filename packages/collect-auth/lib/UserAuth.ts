@@ -1,5 +1,5 @@
-import { HttpError } from "@collect/core";
-import { OAuthArgs, Token } from "./requestToken";
+import { HttpError } from '@collect/core';
+import { OAuthArgs, Token } from './requestToken';
 
 /** User credentials. */
 export interface AuthCredentials {
@@ -102,7 +102,7 @@ export class UserAuth {
   private m_accessToken: string | undefined;
   private m_expirationDate?: Date;
   private m_expiresIn?: number;
-  private m_credentials: AuthCredentials = {};
+  private m_credentials: AuthCredentials;
   private m_scope?: string;
   private readonly m_apiUrl: string;
 
@@ -117,14 +117,14 @@ export class UserAuth {
       this.m_apiUrl = this.config.customUrl;
     } else {
       switch (this.config.env) {
-        case "collect":
-          this.m_apiUrl = "https://account.api.collect.atlan.com/";
+        case 'collect':
+          this.m_apiUrl = 'https://account.api.collect.atlan.com/';
           break;
-        case "collect-dev":
-          this.m_apiUrl = "https://account.api.dev.collect.atlan.com/";
+        case 'collect-dev':
+          this.m_apiUrl = 'https://account.api.dev.collect.atlan.com/';
           break;
         default:
-          this.m_apiUrl = "https://account.api.collect.atlan.com/";
+          this.m_apiUrl = 'https://account.api.collect.atlan.com/';
           break;
       }
     }
@@ -157,13 +157,13 @@ export class UserAuth {
       !this.m_credentials.accessKeySecret
     ) {
       return Promise.reject(
-        "Error getting token. The credentials has not been added!"
+        'Error getting token. The credentials has not been added!'
       );
     }
 
     const response = await this.config
       .tokenRequester({
-        url: this.config.customUrl || this.m_apiUrl + "oauth2/token",
+        url: this.config.customUrl || this.m_apiUrl + 'oauth2/token',
         consumerKey: this.m_credentials.accessKeyId,
         secretKey: this.m_credentials.accessKeySecret,
         scope: this.m_scope,
@@ -198,12 +198,12 @@ export class UserAuth {
     };
 
     const headers = new Headers({
-      Authorization: "Bearer " + token,
-      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
     });
 
-    const request = await fetch(this.m_apiUrl + "verify/accessToken", {
-      method: "POST",
+    const request = await fetch(this.m_apiUrl + 'verify/accessToken', {
+      method: 'POST',
       body: JSON.stringify(body),
       headers,
     });
@@ -223,12 +223,12 @@ export class UserAuth {
    */
   async getUserInfo(userToken: string): Promise<UserInfo> {
     const headers = new Headers({
-      Authorization: "Bearer " + userToken,
-      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + userToken,
+      'Content-Type': 'application/json',
     });
 
-    const request = await fetch(this.m_apiUrl + "user/me", {
-      method: "GET",
+    const request = await fetch(this.m_apiUrl + 'user/me', {
+      method: 'GET',
       headers,
     });
 

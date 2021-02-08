@@ -1,7 +1,9 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
+    "composite": true,
+    "rootDir": "lib",
     "outDir": "build"
   },
-  "include": ["./lib", "index.ts"]
+  "references": [{ "path": "../collect-core" }]
 }
