@@ -16,6 +16,18 @@ Obviously this isn't exhaustive docs. But it should give an idea
   - `@collect/core`
   - `@collect/store`
 
+### Setup
+
+Install dependencies
+```
+yarn install
+```
+
+Build packages
+```
+yarn build
+```
+
 ## Scaling options
 
 - RabbitMQ for work queue
