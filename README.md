@@ -40,7 +40,7 @@ Obviously this isn't exhaustive docs. But it should give an idea
 
 ## Architecture
 
-![architecture](https://codimd.s3.shivering-isles.com/demo/uploads/upload_fb2aa60e766dde16d4b03b2f58e67c27.png)
+![architecture](https://user-images.githubusercontent.com/28642011/107248639-7fe03b00-6a58-11eb-89df-83db339839fe.png)
 
 ## Notes
 
