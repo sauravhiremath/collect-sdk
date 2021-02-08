@@ -11,7 +11,7 @@ export type EnvironmentName = 'collect' | 'collect-dev' | 'local' | string;
  * @return Based on the specified environment, the URL string of the API Lookup Service or the URL string of the custom service.
  */
 export function getEnvLookUpUrl(env: EnvironmentName): string {
-  function isURL(str: string) {
+  function isURL(string: string) {
     const protocol = '(?:(?:[a-z]+:)?//)';
     const ip = '(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}';
     const host =
@@ -25,7 +25,7 @@ export function getEnvLookUpUrl(env: EnvironmentName): string {
       `(?:${protocol}|www\\.)(?:localhost|${ip}|${host}${domain}${tld})${port}${path}`
     );
 
-    return regex.test(str.trim());
+    return regex.test(string.trim());
   }
 
   if (isURL(env)) {

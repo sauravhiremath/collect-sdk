@@ -101,9 +101,9 @@ export interface UserInfo {
 export class UserAuth {
   private m_accessToken: string | undefined;
   private m_expirationDate?: Date;
-  private m_expiresIn?: number;
-  private m_credentials: AuthCredentials;
-  private m_scope?: string;
+  private readonly m_expiresIn?: number;
+  private readonly m_credentials: AuthCredentials;
+  private readonly m_scope?: string;
   private readonly m_apiUrl: string;
 
   /**
@@ -131,7 +131,7 @@ export class UserAuth {
 
     if (!config.credentials) {
       throw new Error(
-        `The credentials has not been added, please add credentials!`
+        'The credentials has not been added, please add credentials!'
       );
     }
 
@@ -157,19 +157,19 @@ export class UserAuth {
       !this.m_credentials.accessKeySecret
     ) {
       return Promise.reject(
-        'Error getting token. The credentials has not been added!'
+        new Error('Error getting token. The credentials has not been added!')
       );
     }
 
     const response = await this.config
       .tokenRequester({
-        url: this.config.customUrl || this.m_apiUrl + 'oauth2/token',
+        url: this.config.customUrl ?? this.m_apiUrl + 'oauth2/token',
         consumerKey: this.m_credentials.accessKeyId,
         secretKey: this.m_credentials.accessKeySecret,
         scope: this.m_scope,
-        expiresIn: this.m_expiresIn,
+        expiresIn: this.m_expiresIn
       })
-      .catch((err) => Promise.reject(err));
+      .catch(async error => Promise.reject(error));
 
     if (response.accessToken) {
       this.m_accessToken = response.accessToken;
@@ -183,6 +183,7 @@ export class UserAuth {
         this.m_expirationDate.getSeconds() + response.expiresIn
       );
     }
+
     return this.m_accessToken;
   }
 
@@ -194,18 +195,18 @@ export class UserAuth {
    */
   async validateAccessToken(token: string): Promise<string | boolean> {
     const body = {
-      token,
+      token
     };
 
     const headers = new Headers({
       Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     });
 
     const request = await fetch(this.m_apiUrl + 'verify/accessToken', {
       method: 'POST',
       body: JSON.stringify(body),
-      headers,
+      headers
     });
 
     if (!request.ok) {
@@ -224,12 +225,12 @@ export class UserAuth {
   async getUserInfo(userToken: string): Promise<UserInfo> {
     const headers = new Headers({
       Authorization: 'Bearer ' + userToken,
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     });
 
     const request = await fetch(this.m_apiUrl + 'user/me', {
       method: 'GET',
-      headers,
+      headers
     });
 
     if (!request.ok) {

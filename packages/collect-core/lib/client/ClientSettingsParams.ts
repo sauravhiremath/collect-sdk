@@ -1,6 +1,6 @@
-import { EnvironmentName } from "../utils";
+import {EnvironmentName} from '../utils';
 
-export interface ClientSettingsParams {
+export interface ClientSettingsParameters {
   /**
    * An asynchronous callback used to return a `Promise` with the access token for requests.
    *

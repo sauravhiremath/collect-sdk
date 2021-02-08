@@ -1,1 +1,1 @@
-export * from "./ClientSettingsParams";
+export * from './ClientSettingsParams';

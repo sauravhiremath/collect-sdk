@@ -2,7 +2,7 @@ import { google } from 'googleapis';
 import {
   OAuth2ClientOptions,
   Credentials,
-  OAuth2Client,
+  OAuth2Client
 } from 'google-auth-library';
 import fs from 'fs';
 import url from 'url';
@@ -29,7 +29,7 @@ export class Google {
   public sheets?: GoogleSheets;
   private readonly m_credentials: OAuth2ClientOptions;
   private readonly m_token: Credentials;
-  private readonly m_scopes: Array<string>;
+  private readonly m_scopes: string[];
 
   private readonly m_apiUrl?: string;
 
@@ -69,7 +69,7 @@ export class Google {
     );
     this.m_token = JSON.parse(fs.readFileSync(config.tokenPath, 'utf8'));
     this.m_scopes = config.scopes || [
-      'https://www.googleapis.com/auth/spreadsheets',
+      'https://www.googleapis.com/auth/spreadsheets'
     ];
   }
 
@@ -89,17 +89,17 @@ export class Google {
     return new Promise((resolve, reject) => {
       const authUrl = oAuth2Client.generateAuthUrl({
         access_type: 'offline',
-        scope: this.m_scopes,
+        scope: this.m_scopes
       });
 
       // Open an http server to accept the oauth callback. Here, the
       // only request to our webserver is to /oauth2callback?code=<code>
       const server = http
-        .createServer(async (req, res) => {
+        .createServer(async (request, res) => {
           try {
-            if (req.url && req.url.indexOf('/oauth2callback') > -1) {
+            if (request.url?.includes('/oauth2callback')) {
               // Acquire the code from the querystring, and close the web server.
-              const qs = new url.URL(req.url, 'http://localhost:3000')
+              const qs = new url.URL(request.url, 'http://localhost:3000')
                 .searchParams;
               const code = qs.get('code');
               res.end(
@@ -118,13 +118,19 @@ export class Google {
               oAuth2Client.setCredentials(r.tokens);
               resolve(oAuth2Client);
             }
-          } catch (e) {
-            reject(e);
+          } catch (error: unknown) {
+            reject(error);
           }
         })
         .listen(3000, () => {
           // Open the browser to the authorize url to start the workflow
-          open(authUrl, { wait: false }).then((cp) => cp.unref());
+          open(authUrl, { wait: false })
+            .then(cp => {
+              cp.unref();
+            })
+            .catch(error => {
+              reject(error);
+            });
         });
       enableDestroy(server);
     });

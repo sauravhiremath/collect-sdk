@@ -14,7 +14,7 @@ export class HttpError extends Error {
    */
   constructor(public status: number, message: string) {
     super(message);
-    this.name = "HttpError";
+    this.name = 'HttpError';
   }
 
   /**
@@ -24,6 +24,6 @@ export class HttpError extends Error {
    * @returns True is the given error is an HTTP error; false otherwise.
    */
   public static isHttpError(error: any): error is HttpError {
-    return error.name === "HttpError";
+    return error.name === 'HttpError';
   }
 }

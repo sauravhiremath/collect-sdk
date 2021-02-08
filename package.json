@@ -1,14 +1,24 @@
 {
-  "name": "collect-plugin",
+  "name": "@collect/plugin",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
   "author": "Saurav M. H",
   "license": "GPL-3.0-or-later",
   "eslintConfig": {
     "extends": [
       "xo",
       "xo-typescript/space"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.ts"
+        ],
+        "rules": {
+          "object-curly-spacing": "off",
+          "no-negated-condition": "off"
+        }
+      }
     ]
   },
   "scripts": {
@@ -17,8 +27,9 @@
     "build:js": "node ./scripts/build.js",
     "build:ts": "node ./scripts/buildTs.js",
     "lint": "eslint . --cache --ext js,jsx,ts,tsx,md",
-    "lint:prettier": "prettier '**/*.{md,yml,yaml}' 'website/static/**/*.{css,js}' --write --ignore-path .gitignore",
-    "lint:prettier:ci": "prettier '**/*.{md,yml,yaml}' 'website/static/**/*.{css,js}' --check --ignore-path .gitignore",
+    "lint:fix": "eslint . --cache --ext js,jsx,ts,tsx,md --fix",
+    "lint:prettier": "prettier '**/*.{md,yml,yaml}' --write --ignore-path .gitignore",
+    "lint:prettier:ci": "prettier '**/*.{md,yml,yaml}' --check --ignore-path .gitignore",
     "watch": "yarn build:js && node ./scripts/watch.js",
     "watch:ts": "yarn build:ts --watch"
   },
@@ -50,5 +61,9 @@
   },
   "engines": {
     "node": "^12.13.0 || ^14.15.0 || >=15.0.0"
+  },
+  "dependencies": {
+    "eslint": "^7.19.0",
+    "global": "^4.4.0"
   }
 }

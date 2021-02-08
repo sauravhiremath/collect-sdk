@@ -10,8 +10,8 @@ export enum STATUS_CODES {
   TO_MANY_REQUESTS = 429,
   INTERNAL_SERVER_ERROR = 500,
   SERVICE_UNAVAIBLE = 503,
-  NETWORK_CONNECT_TIMEOUT = 599,
+  NETWORK_CONNECT_TIMEOUT = 599
 }
 
-export * from "./getEnvLookupUrl";
-export * from "./HttpError";
+export * from './getEnvLookupUrl';
+export * from './HttpError';

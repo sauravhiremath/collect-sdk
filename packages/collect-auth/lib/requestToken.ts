@@ -1,4 +1,5 @@
-import { HttpError } from "@collect/core";
+import { HttpError } from '@collect/core';
+import { v4 } from 'uuid';
 
 /**
  * Signing a request using HMAC algorithms.
@@ -68,15 +69,12 @@ async function signLatin1(
   for (let i = 0; i < data.length; ++i) {
     buf[i] = data.charCodeAt(i);
   }
+
   return tokenSigner.sign(buf.buffer, secretKey);
 }
 
-function generateUid(randomValues: Uint8Array): string {
-  const pad2 = (str: string) => (str.length === 1 ? "0" + str : str);
-  return randomValues.reduce(
-    (result, byte) => (result += pad2(byte.toString(UID_SIZE))),
-    ""
-  );
+function generateUid(): string {
+  return v4();
 }
 
 async function getOAuthAuthorization(
@@ -86,23 +84,22 @@ async function getOAuthAuthorization(
   if (args.timestamp === undefined) {
     args.timestamp = Math.floor(Date.now() / MILLISECS_PER_SEC);
   }
+
   if (args.nonce === undefined) {
-    args.nonce = generateUid(
-      tokenSigner.getRandomValues(new Uint8Array(UID_SIZE))
-    );
+    args.nonce = generateUid();
   }
 
   const signatureBase =
-    "POST&" +
+    'POST&' +
     encodeURIComponent(args.url) +
-    "&" +
+    '&' +
     encodeURIComponent(
       `oauth_consumer_key=${args.consumerKey}&oauth_nonce=${args.nonce}&oauth_signature_method=HMAC-SHA256&oauth_timestamp=${args.timestamp}&oauth_version=1.0`
     );
 
   const signature = await signLatin1(
     signatureBase,
-    args.secretKey + "&",
+    args.secretKey + '&',
     tokenSigner
   );
 
@@ -129,23 +126,23 @@ export async function requestToken(
   const authorization = await getOAuthAuthorization(args, tokenSigner);
 
   const body = {
-    grantType: "client_credentials",
+    grantType: 'client_credentials',
     scope: args.scope,
     expiresIn:
-      args.expiresIn === undefined
-        ? SECS_PER_MIN * MINS_PER_HOUR
-        : args.expiresIn,
+      args.expiresIn === undefined ?
+        SECS_PER_MIN * MINS_PER_HOUR :
+        args.expiresIn
   };
 
   const headers = new Headers({
     Authorization: authorization,
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json'
   });
 
   const requestInit: any = {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(body) as BodyInit,
-    headers,
+    headers
   };
 
   const request = await fetch(args.url, requestInit);

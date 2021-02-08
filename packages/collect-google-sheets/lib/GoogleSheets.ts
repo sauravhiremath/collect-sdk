@@ -3,8 +3,8 @@ import { OAuth2Client } from 'google-auth-library';
 import { StoreData } from '@collect/store';
 
 export class GoogleSheets {
-  private auth: OAuth2Client;
   public sheetsService: sheets_v4.Sheets;
+  private readonly auth: OAuth2Client;
 
   /**
    * Creates the [[GoogleSheets]] instance.
@@ -25,13 +25,13 @@ export class GoogleSheets {
    * @returns updated spreadsheet data after all operations
    */
   async export2Sheets(
-    data: Array<StoreData>,
+    data: StoreData[],
     title: string
   ): Promise<sheets_v4.Schema$BatchUpdateSpreadsheetResponse> {
     try {
       const resource: sheets_v4.Params$Resource$Spreadsheets$Create = {
         auth: this.auth,
-        requestBody: { properties: { title } },
+        requestBody: { properties: { title } }
       };
 
       let spreadsheetId: string | undefined;
@@ -44,25 +44,25 @@ export class GoogleSheets {
         spreadsheetId = spreadsheet.data.spreadsheetId;
         spreadsheetUrl = spreadsheet.data.spreadsheetUrl;
       } else {
-        throw new Error(`Spreadsheet creation failed. Kindly try again!`);
+        throw new Error('Spreadsheet creation failed. Kindly try again!');
       }
 
-      const requests: Array<sheets_v4.Schema$Request> = [];
+      const requests: sheets_v4.Schema$Request[] = [];
 
-      data.forEach((storeData) => {
+      data.forEach(storeData => {
         requests.push({
-          appendCells: { rows: [...Object.values(storeData)] },
+          appendCells: { rows: [...Object.values(storeData)] }
         });
       });
 
-      const updateParams: sheets_v4.Params$Resource$Spreadsheets$Batchupdate = {
+      const updateParameters: sheets_v4.Params$Resource$Spreadsheets$Batchupdate = {
         auth: this.auth,
         requestBody: { includeSpreadsheetInResponse: true, requests },
-        spreadsheetId,
+        spreadsheetId
       };
 
       const updatedSheet = await this.sheetsService.spreadsheets.batchUpdate(
-        updateParams
+        updateParameters
       );
 
       if (updatedSheet.status === 200) {
@@ -70,9 +70,9 @@ export class GoogleSheets {
       }
 
       throw new Error(
-        `Google Sheets batch update failed. Internal Server Error!`
+        'Google Sheets batch update failed. Internal Server Error!'
       );
-    } catch (error) {
+    } catch (error: unknown) {
       throw error;
     }
   }

@@ -1,9 +1,9 @@
-import { HttpError } from "@collect/core";
+import { HttpError } from '@collect/core';
 
 /**
  * ResponseType for given question
  */
-export type ResponseType = string | number | Array<string> | boolean;
+export type ResponseType = string | number | string[] | boolean;
 
 /**
  * Single User Response
@@ -30,7 +30,7 @@ export interface FormData {
   /** Question description. */
   description: string;
   /** Collection of responses by all users. */
-  responses: Array<UserResponse>;
+  responses: UserResponse[];
   /** The Unix time (seconds) when the form was created. */
   createdTime: number;
   /** The Unix time (seconds) when the form/formData was updated. */
@@ -44,11 +44,11 @@ export interface StoreData {
   /** * Form unique identifier. */
   formId: string;
   /** The scopes which can access the form. */
-  authorizedScopes: Array<string>;
+  authorizedScopes: string[];
   /** Form name. */
   formName: string;
   /** Form data collection. */
-  formData: Array<FormData>;
+  formData: FormData[];
   /** The Unix time (seconds) when the form was created. */
   createdTime: number;
   /** The Unix time (seconds) when the form/formData was updated. */
@@ -68,7 +68,7 @@ export interface StoreConfig {
  * Used to initialise form store and populate the data
  */
 export class Store {
-  private m_accessToken: string;
+  private readonly m_accessToken: string;
   private readonly m_apiUrl: string;
 
   /**
@@ -82,21 +82,21 @@ export class Store {
       this.m_apiUrl = this.config.customUrl;
     } else {
       switch (this.config.env) {
-        case "collect":
-          this.m_apiUrl = "https://account.api.collect.atlan.com/";
+        case 'collect':
+          this.m_apiUrl = 'https://account.api.collect.atlan.com/';
           break;
-        case "collect-dev":
-          this.m_apiUrl = "https://account.api.dev.collect.atlan.com/";
+        case 'collect-dev':
+          this.m_apiUrl = 'https://account.api.dev.collect.atlan.com/';
           break;
         default:
-          this.m_apiUrl = "https://account.api.collect.atlan.com/";
+          this.m_apiUrl = 'https://account.api.collect.atlan.com/';
           break;
       }
     }
 
     if (!config.accessToken) {
       throw new Error(
-        `The access token is not present, please get a user access token first!`
+        'The access token is not present, please get a user access token first!'
       );
     }
 
@@ -105,17 +105,17 @@ export class Store {
 
   async getFormData(formId: string): Promise<StoreData> {
     if (!formId) {
-      throw new Error(`Cannot FETCH form data. Missing fields - formId!`);
+      throw new Error('Cannot FETCH form data. Missing fields - formId!');
     }
 
     const headers = new Headers({
-      Authorization: "Bearer " + this.m_accessToken,
-      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + this.m_accessToken,
+      'Content-Type': 'application/json'
     });
 
-    const request = await fetch(this.m_apiUrl + "forms/" + formId, {
-      method: "GET",
-      headers,
+    const request = await fetch(this.m_apiUrl + 'forms/' + formId, {
+      method: 'GET',
+      headers
     });
 
     if (!request.ok) {
@@ -137,6 +137,7 @@ export class Store {
    *
    * @returns Array<UserResponses> from the required form
    */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   async findResponseByUserId(formId: string, userId: string): Promise<any> {}
 
   /**
@@ -144,5 +145,6 @@ export class Store {
    * @param formId The string containing unique identifier of the form to remove data from
    * @param userId The string containing unique identifier of the user to find and remove from the form
    */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   async removeResponseByUserId(formId: string, userId: string): Promise<void> {}
 }
